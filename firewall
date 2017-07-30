@@ -12,11 +12,6 @@
 # Original author: Bernhard Mäser <bernhard.maeser@scale-it.at>
 # Maintainers & contributors @sudokamikaze & @lithero
 
-#################################################################
-
-## PLACE THIS FILE at /etc/init.d/firewall
-## MAKE SURE ITS EXECUTABLE (chmod 755 /etc/init.d/firewall)
-## UPDATE YOUR RC (update-rc.d firewall defaults)
 
 
 #################################################################
@@ -33,11 +28,11 @@ case "$1" in
         #################################################################
         # source configuration
         #################################################################
-        if [ -f /etc/firewall/firewall.conf ] ; then
-            source /etc/firewall/firewall.conf
+        if [ -f /etc/iptables-remastered/firewall.conf ] ; then
+            source /etc/iptables-remastered/firewall.conf
         else 
-            echo "no configuration-file found in /etc/firewall/firewall.conf"
-            echo "aborting, firewall NOT startet"
+            echo "No configuration found in /etc/iptables-remastered/firewall.conf"
+            echo "Exiting..."
             exit 1
         fi
 
@@ -109,25 +104,25 @@ case "$1" in
         # EXTERNAL CONFIGS
         ##################################################################
 
-        ## ACCEPT ALL CONNECTIONS FROM WHITELIST FILE /etc/firewall/ip-whitelist.conf
-        for IP in `cat /etc/firewall/ip-whitelist.conf | sed 's/\s/_/g' | grep -v "^#"`; do
+        ## ACCEPT ALL CONNECTIONS FROM WHITELIST FILE /etc/iptables-remastered/ip-whitelist.conf
+        for IP in `cat /etc/iptables-remastered/ip-whitelist.conf | sed 's/\s/_/g' | grep -v "^#"`; do
             $IPTABLES -A INPUT -s $IP -m state --state NEW -j ACCEPT
         done;
 
-        ## DROP ALL CONNECTIONS FROM BLACKLIST FILE /etc/firewall/ip-blacklist.conf
-        for IP in `cat /etc/firewall/ip-blacklist.conf | sed 's/\s/_/g' | grep -v "^#"`; do
+        ## DROP ALL CONNECTIONS FROM BLACKLIST FILE /etc/iptables-remastered/ip-blacklist.conf
+        for IP in `cat /etc/iptables-remastered/ip-blacklist.conf | sed 's/\s/_/g' | grep -v "^#"`; do
             $IPTABLES -A INPUT -s $IP -m state --state NEW -j DROP
         done;
 
-        # EXECUTE ALL CUSTOM SCRIPTS IN /etc/firewall/custom
-        if [ "$(ls -A /etc/firewall/custom)" ]; then
-            for F in /etc/firewall/custom/*; do
+        # EXECUTE ALL CUSTOM SCRIPTS IN /etc/iptables-remastered/custom
+        if [ "$(ls -A /etc/iptables-remastered/custom)" ]; then
+            for F in /etc/iptables-remastered/custom/*; do
                 . $F
             done;
         fi
 
-        # ALLOWED PORTS/PROTOCOLS FROM /etc/firewall/services.conf
-        cat /etc/firewall/services.conf | grep -v "^#" | while read line; do
+        # ALLOWED PORTS/PROTOCOLS FROM /etc/iptables-remastered/services.conf
+        cat /etc/iptables-remastered/services.conf | grep -v "^#" | while read line; do
             [ -z "$line" ] && continue
     
             # INITIALIZE
