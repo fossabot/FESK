@@ -1,21 +1,28 @@
-# iptables-boilerplate
-rock solid default firewall-rules for webhosts
+# iptables-remastered
+BoilerPlate remastered with extended support for newer distributions 
 
 ## What is this?
-iptables-boilerplate is a set of predefined firewall rules that are typically used on "webhosts".
-its not a set of rules, designed to secure your home or office-network or to setup a router or gatweay.
-think of "lamp"-servers.
+iptables-remastered is a fork of iptables-boilerplate with extended support
 
 #### iptables-boilerplate is tested on
-* Debian 6.0 / Squeeze (oldstable)
-* Debian 7.0 / Wheezy (stable)
-* Debian 8.0 / Jessie (testing)
+##### SYSVINIT
+* Debian 6.0 / Squeeze 
+* Debian 7.0 / Wheezy 
+* Debian 8.0 / Jessie 
 * Ubuntu 10.04 LTS / Lucid
 * Ubuntu 12.04 LTS / Precise
 * Ubuntu 13.10 / Raring
 * Ubuntu 14.04 LTS / Trusty
+##### SYSTEMD
+* Archlinux
+* Debian 8.0 / Jessie 
+* Debian 9.0 / Stretch
+* Ubuntu 15.04 LTS / Vivid Verve
+* Ubuntu 15.10 / Wily Werewolf
+* Ubuntu 16.04 / Xenial Xerus
+* Ubuntu 16.10 / Yakkety Yak
+* Ubuntu 17.04 / Zesty Zapus
 
-we will support every LTS (Ubuntu) and stable (Debian) version.
 
 #### Features
 * rock solid defaults
@@ -28,45 +35,57 @@ we will support every LTS (Ubuntu) and stable (Debian) version.
 ## Installation
 
 ### Easy Install
-On Ubuntu and Debain you can use `make` to install or uninstall.
-
-Make sure `make` is installed:
-
-    sudo apt-get install make
-
-And follow these steps to install:
-
-    git clone git://github.com/bmaeser/iptables-boilerplate.git
-    cd iptables-boilerplate
-    sudo make
-
+```
+    git clone https://github.com/Entframe/iptables-remastered.git
+    cd iptables-remastered
+    sudo ./install
+```
 To uninstall run:
-
-    sudo make uninstall
-
+```
+    sudo ./install
+```
 ### On other systems
 
 create necessary directories first
-    
-    sudo mkdir /etc/firewall
-    sudo mkdir /etc/firewall/custom
-
+========
+```
+    sudo mkdir /etc/iptables-remastered
+    sudo mkdir /etc/iptables-remastered/custom
+```
 checkout the github repo and install the files
+========
+```
+    git clone https://github.com/Entframe/iptables-remastered.git
+    cd iptables-remastered
 
-    git clone git://github.com/bmaeser/iptables-boilerplate.git
-    cd iptables-boilerplate
+    # If your system running by systemd 
+    sudo cp systemd/rtables.service /usr/lib/systemd/system/rtables.service
+    sudo cp firewall /etc/iptables-remastered/firewall
+
+    # If your system running by sysvinit
     sudo cp firewall /etc/init.d/firewall
-    cd etc/firewall/
-    sudo cp *.conf /etc/firewall/
-    
-make sure firewall is executable and update runnlevels
 
+    cd etc/iptables-remastered/
+    sudo cp *.conf /etc/iptables-remastered/
+```
+make sure firewall is executable and update runnlevels
+========
+```
+    # For systemd
+    sudo chmod 644 /usr/lib/systemd/system/rtables.service
+    sudo chmod 755 /etc/iptables-remastered/firewall
+    sudo systemctl daemon-reload
+```
+
+
+```
+    # For sysvinit
     sudo chmod 755 /etc/init.d/firewall
     sudo update-rc.d firewall defaults
-    
+``` 
 ## Configuration
 
-All configuration-files are to be found at /etc/firewall/
+All configuration-files are to be found at /etc/iptables-remastered/
 
 Feel free to read the firewall-script itself and comment/uncomment what you like or dislike.
 
@@ -140,41 +159,21 @@ Place your custom rules in here.
 There are some usefull examples in ./custom-examples/ that limit the ammount of new and overall connections.
 
 ## Usage
-If you updated your runlevels, the firewall starts every time you boot your system.
-However, you can manually start/stop/restart, e.g. to update changed settings.
 
+For sysvinit
+=======
+```
     /etc/init.d/firewall (start|stop|restart|reload|force-reload|status)
+```
+
+For systemd
+=======
+```
+    systemctl (start|stop|restart) rtables
+```
 
 * start: starts the firewall
 * stop: stops the firewall
 * restart, reload, force-reload: restarts the firewall (all three the same)
 * status: print out the status of the firewall, shows all entries in iptables
-* version: print out the version of iptables-boilerplate
 
-## How to contribute
-fork + hack + pull request please :-)
-
-thx
-
-
-## Licence
-The MIT License (MIT)
-Copyright © Bernhard Mäser(http://bmaeser.io) and contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
