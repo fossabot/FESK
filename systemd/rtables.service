@@ -1,0 +1,25 @@
+#  Iptables-remastered is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This file is default for Debian packaging. See also
+# /etc/iptables-remastered/firewall for environment variables.
+
+
+[Unit]
+Description=Iptables-remastered is a custom firewall wrapper for iptables
+After=network.target
+
+[Service]
+Type=oneshot
+
+ExecStart=/etc/iptables-remastered/firewall start
+ExecStop=/etc/iptables-remastered/firewall stop
+ExecReload=/etc/iptables-remastered/firewall restart
+
+RemainAfterExit=yes
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
