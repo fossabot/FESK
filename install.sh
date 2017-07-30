@@ -18,6 +18,7 @@ case $(head -n1 /etc/issue | cut -f 1 -d ' ') in
         7 | 6 | 5) init=sysvinit ;;
         8 | 9) init=systemd ;;
         *) echo "Currently $VERSION_ID is not supported, please report it in ISSUES on github" && exit 1 ;;
+    esac
     ;;
     Ubuntu) # We need to identify which version installed on this PC
     eval $(grep VERSION_ID= /etc/os-release)
