@@ -21,6 +21,7 @@ case $(head -n1 /etc/issue | cut -f 1 -d ' ') in
         *) echo "Currently $VERSION_ID is not supported, please report it in ISSUES on github" && exit 1 ;;
     esac
     ;;
+    *) echo "Unsuported distro, you can read documentation in README.md to install this manually" && exit 1
 esac
 }
 
