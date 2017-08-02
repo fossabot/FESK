@@ -1,0 +1,56 @@
+#!/bin/bash
+
+install() { 
+case "$init" in
+    systemd) systemd_op ;;
+    sysvinit) sysvinit_op ;;
+esac
+}
+
+function sysvinit_op {
+case "$op" in
+    install)
+    mkdir /etc/iptables-remastered
+    mkdir /etc/iptables-remastered/custom
+    install -m 755 firewall /etc/init.d/firewall
+    cp etc/firewall/*.conf /etc/iptables-remastered
+    update-rc.d firewall defaults
+    ;;
+    remove)
+    /etc/init.d/firewall stop
+    rm -rf  /etc/iptables-remastered
+    rm /etc/init.d/firewall
+    ;;
+    update)
+    /etc/init.d/firewall stop
+    install -m 755 firewall /etc/init.d/firewall
+    update-rc.d firewall defaults
+    ;;
+esac
+}
+
+function systemd_op {
+case "$op" in
+    install)
+    mkdir /etc/iptables-remastered
+    mkdir /etc/iptables-remastered/custom
+    install -m 755 firewall /etc/iptables-remastered/firewall
+    cp etc/firewall/*.conf /etc/iptables-remastered
+    install -Dm644 systemd/rtables.service /usr/lib/systemd/system/rtables.service
+    systemctl daemon-reload
+    ;;
+    remove)
+    systemctl stop rtables
+    systemctl disable rtables
+    rm -rf /etc/iptables-remastered
+    rm /usr/lib/systemd/system/rtables.service
+    systemctl daemon-reload
+    ;;
+    update)
+    systemctl stop rtables
+    install -m 755 firewall /etc/iptables-remastered/firewall
+    install -Dm644 systemd/rtables.service /usr/lib/systemd/system/rtables.service
+    systemctl daemon-reload
+    ;;
+esac
+}
