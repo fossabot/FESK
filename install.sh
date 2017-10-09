@@ -18,10 +18,11 @@ case $(head -n1 /etc/issue | cut -f 1 -d ' ') in
         8 | 9) init=systemd ;;
         14.04 | 13.10 | 12.04 | 10.04) init=sysvinit ;;
         15.04 | 15.10 | 16.04 | 16.10) init=systemd ;;
-        *) echo "Currently $VERSION_ID is not supported, please report it in ISSUES on github" && exit 1 ;;
+        *) echo Currently $(head -n1 /etc/issue | cut -f 1 -d ' ') $VERSION_ID is not supported
+        echo Please report it in ISSUES on github && exit 1 ;;
     esac
     ;;
-    *) echo "Unsuported distro, you can read documentation in README.md to install this manually" && exit 1
+    *) echo "Unsuported distro. However, you can install this manually, manual located at README.md" && exit 1 ;;
 esac
 }
 
@@ -41,7 +42,8 @@ fi
 
 case "$op" in
     ask) 
-    echo -n "This project already installed. Do you wan't to update it or remove?[U/R]: "
+    echo "Iptables-Remastered already installed."
+    echo -n "Do you want to update or remove it?[U/R]: "
     read install
     case "$install" in
     R|REMOVE|r) pre=remove
@@ -51,11 +53,12 @@ case "$op" in
     esac
     ;;
     install) 
-    echo  Installing on $(head -n1 /etc/issue | cut -f 1 -d ' ')
+    echo "Iptables-boilderplate project is going to install"
     echo -n "Are you sure?[Y/N]: "
     read sure
     case "$sure" in
-    y|Y) pre=install
+    y|Y) echo Installing on $(head -n1 /etc/issue | cut -f 1 -d ' ')
+    pre=install
     ;;
     n|N) exit 1
     ;;
