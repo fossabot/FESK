@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-# Am I root?
 if [ "x$(id -u)" != 'x0' ]; then
     echo 'Error: this script can only be executed by root'
     exit 1
@@ -26,30 +24,73 @@ case $(head -n1 /etc/issue | cut -f 1 -d ' ') in
 esac
 }
 
-function pre-install {
+function install_funct {
+case "$operation" in
+    install) 
+    mkdir /etc/iptables-remastered
+    mkdir /etc/iptables-remastered/custom
+    cp etc/firewall/*.conf /etc/iptables-remastered
+    install -m 755 firewall /etc/iptables-remastered/firewall
+
+    if [ "$init" == "systemd" ]; then
+    install -Dm644 systemd/rtables.service /usr/lib/systemd/system/rtables.service
+    systemctl daemon-reload
+    elif [ "$init" == "sysvinit" ]; then
+    ln -s /etc/iptables-remastered/firewall /etc/init.d/firewall
+    update-rc.d firewall defaults
+    fi
+
+    echo "Installed" ;;
+    update)
+
+    install -m 755 firewall /etc/iptables-remastered/firewall
+
+    if [ "$init" == "systemd" ]; then
+    systemctl stop rtables
+    install -Dm644 systemd/rtables.service /usr/lib/systemd/system/rtables.service
+    systemctl daemon-reload
+    elif [ "$init" == "sysvinit" ]; then
+    /etc/init.d/firewall stop
+    ln -s /etc/iptables-remastered/firewall /etc/init.d/firewall
+    update-rc.d firewall defaults
+    fi
+    echo "Updated, check new configuration and start your firewall" ;;
+    remove)
+
+
+    if [ "$init" == "systemd" ]; then
+    systemctl stop rtables
+    systemctl disable rtables
+    rm -rf /etc/iptables-remastered
+    rm /usr/lib/systemd/system/rtables.service
+    systemctl daemon-reload
+    elif [ "$init" == "sysvinit" ]; then
+    /etc/init.d/firewall stop
+    rm -rf  /etc/iptables-remastered
+    rm /etc/init.d/firewall
+    fi
+    echo "Removed" ;;
+esac
+}
+
+# ========================================================
+
 distrocheck
 
-case "$init" in
-    systemd) path="/etc/iptables-remastered/firewall" ;;
-    sysvinit) path="/etc/init.d/firewall" ;;
-    esac
-
-if [ -f "$path" ]; then
-    op=ask
+if [ -f "/etc/iptables-remastered/firewall" ]; then
+    going_to=ask
 else
-    op=install
+    going_to=install
 fi
 
-case "$op" in
+case "$going_to" in
     ask) 
     echo "Iptables-Remastered already installed."
     echo -n "Do you want to update or remove it?[U/R]: "
     read install
     case "$install" in
-    R|REMOVE|r) pre=remove
-    ;;
-    U|UPDATE|u) pre=update
-    ;;
+    R|REMOVE|r) operation=remove ;;
+    U|UPDATE|u) operation=update ;;
     esac
     ;;
     install) 
@@ -58,79 +99,9 @@ case "$op" in
     read sure
     case "$sure" in
     y|Y) echo Installing on $(head -n1 /etc/issue | cut -f 1 -d ' ')
-    pre=install
-    ;;
-    n|N) exit 1
-    ;;
+    operation=install ;;
+    *) exit 1 ;;
     esac
     ;;
 esac
-final
-}
-
-function final {
-case "$pre" in
-    install) 
-
-    case "$init" in
-    systemd)
-    mkdir /etc/iptables-remastered
-    mkdir /etc/iptables-remastered/custom
-    install -m 755 firewall /etc/iptables-remastered/firewall
-    cp etc/firewall/*.conf /etc/iptables-remastered
-    install -Dm644 systemd/rtables.service /usr/lib/systemd/system/rtables.service
-    systemctl daemon-reload
-    ;;
-    sysvinit)
-    mkdir /etc/iptables-remastered
-    mkdir /etc/iptables-remastered/custom
-    install -m 755 firewall /etc/init.d/firewall
-    cp etc/firewall/*.conf /etc/iptables-remastered
-    update-rc.d firewall defaults
-    ;;
-    esac
-    echo "Installed"
-    
-    ;;
-    update)
-
-    case "$init" in
-    systemd)
-    systemctl stop rtables
-    install -m 755 firewall /etc/iptables-remastered/firewall
-    install -Dm644 systemd/rtables.service /usr/lib/systemd/system/rtables.service
-    systemctl daemon-reload
-    ;;
-    sysvinit)
-    /etc/init.d/firewall stop
-    install -m 755 firewall /etc/init.d/firewall
-    update-rc.d firewall defaults
-    ;;
-    esac
-    echo "Updated, check new configuration and start your firewall"
-
-
-    ;;
-    remove)
-
-
-    case "$init" in
-    systemd)
-    systemctl stop rtables
-    systemctl disable rtables
-    rm -rf /etc/iptables-remastered
-    rm /usr/lib/systemd/system/rtables.service
-    systemctl daemon-reload
-    ;;
-    sysvinit)
-    /etc/init.d/firewall stop
-    rm -rf  /etc/iptables-remastered
-    rm /etc/init.d/firewall
-    ;;
-    esac
-    echo "Removed"
-    ;;
-esac
-}
-
-pre-install
+install_funct
