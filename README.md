@@ -1,10 +1,10 @@
-#:fa-server: FIREWALL EASY SETUP KIT
+# FIREWALL EASY SETUP KIT
 ![](https://i.imgur.com/y4cBlEA.png)
 
-## :fa-question-circle: What is this?
+## What is this?
 FESK is a handy firewall with a configurable set of standard rules and quick port settings. Eg for testing Web instances or apps.
 
-#### :fa-check: FESK was tested and works fine on:
+#### FESK was tested and works fine on:
 
 ##### SYSVINIT
 * Debian 6.0 / Squeeze 
@@ -32,7 +32,7 @@ FESK is a handy firewall with a configurable set of standard rules and quick por
 * one line blacklisting ips
 * extensively documented (inline comments)
 
-## :fa-cog: Installation
+## Installation
 
 ### Easy Install
 ```
