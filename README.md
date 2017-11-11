@@ -1,10 +1,11 @@
-# iptables-remastered
-BoilerPlate remastered with extended support for newer distributions 
+#:fa-server: FIREWALL EASY SETUP KIT
+![](https://i.imgur.com/y4cBlEA.png)
 
-## What is this?
-iptables-remastered is a fork of iptables-boilerplate with extended support
+## :fa-question-circle: What is this?
+FESK is a handy firewall with a configurable set of standard rules and quick port settings. Eg for testing Web instances or apps.
 
-#### iptables-boilerplate is tested on
+#### :fa-check: FESK was tested and works fine on:
+
 ##### SYSVINIT
 * Debian 6.0 / Squeeze 
 * Debian 7.0 / Wheezy 
@@ -14,17 +15,16 @@ iptables-remastered is a fork of iptables-boilerplate with extended support
 * Ubuntu 13.10 / Raring
 * Ubuntu 14.04 LTS / Trusty
 ##### SYSTEMD
-* Archlinux
-* Debian 8.0 / Jessie 
+* Arch Linux
+* Debian 8.0 / Jessie
 * Debian 9.0 / Stretch
-* Ubuntu 15.04 LTS / Vivid Verve
+* Ubuntu 15.04 LTS / Vivid Vervet
 * Ubuntu 15.10 / Wily Werewolf
 * Ubuntu 16.04 / Xenial Xerus
 * Ubuntu 16.10 / Yakkety Yak
-* Ubuntu 17.04 / Zesty Zapus
 
 
-#### Features
+####  Features
 * rock solid defaults
 * easy extendable
 * one-line opening ports
@@ -32,48 +32,48 @@ iptables-remastered is a fork of iptables-boilerplate with extended support
 * one line blacklisting ips
 * extensively documented (inline comments)
 
-## Installation
+## :fa-cog: Installation
 
 ### Easy Install
 ```
-    git clone https://github.com/Entframe/iptables-remastered.git
-    cd iptables-remastered
+    git clone https://github.com/STROHMEYER/FESK.git
+    cd FESK
     sudo ./install
 ```
 To uninstall run:
 ```
     sudo ./install
 ```
-### On other systems
+### Manual install:
 
-create necessary directories first
-========
+####Create necessary directories first
+
 ```
-    sudo mkdir /etc/iptables-remastered
-    sudo mkdir /etc/iptables-remastered/custom
+    sudo mkdir /etc/fesk
+    sudo mkdir /etc/fesk/custom
 ```
-checkout the github repo and install the files
-========
+####Checkout the github repo and install the files
+
 ```
-    git clone https://github.com/Entframe/iptables-remastered.git
-    cd iptables-remastered
+    git clone https://github.com/STROHMEYER/FESK.git
+    cd fesk
 
     # If your system running by systemd 
-    sudo cp systemd/rtables.service /usr/lib/systemd/system/rtables.service
-    sudo cp firewall /etc/iptables-remastered/firewall
+    sudo cp systemd/fesk.service /usr/lib/systemd/system/fesk.service
+    sudo cp firewall /etc/fesk/firewall
 
     # If your system running by sysvinit
     sudo cp firewall /etc/init.d/firewall
 
-    cd etc/iptables-remastered/
-    sudo cp *.conf /etc/iptables-remastered/
+    cd etc/fesk/
+    sudo cp *.conf /etc/fesk/
 ```
-make sure firewall is executable and update runnlevels
+####Make sure firewall is executable and update runnlevels
 ========
 ```
     # For systemd
-    sudo chmod 644 /usr/lib/systemd/system/rtables.service
-    sudo chmod 755 /etc/iptables-remastered/firewall
+    sudo chmod 644 /usr/lib/systemd/system/fesk.service
+    sudo chmod 755 /etc/fesk/firewall
     sudo systemctl daemon-reload
 ```
 
@@ -85,7 +85,7 @@ make sure firewall is executable and update runnlevels
 ``` 
 ## Configuration
 
-All configuration-files are to be found at /etc/iptables-remastered/
+All configuration-files are to be found at /etc/fesk/
 
 Feel free to read the firewall-script itself and comment/uncomment what you like or dislike.
 
@@ -169,11 +169,10 @@ For sysvinit
 For systemd
 =======
 ```
-    systemctl (start|stop|restart) rtables
+    systemctl (start|stop|restart) fesk
 ```
 
 * start: starts the firewall
 * stop: stops the firewall
 * restart, reload, force-reload: restarts the firewall (all three the same)
 * status: print out the status of the firewall, shows all entries in iptables
-

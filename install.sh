@@ -20,38 +20,38 @@ case $(head -n1 /etc/issue | cut -f 1 -d ' ') in
         echo Please report it in ISSUES on github && exit 1 ;;
     esac
     ;;
-    *) echo "Unsuported distro. However, you can install this manually, manual located at README.md" && exit 1 ;;
+    *) echo "Unsuported distro. However, you can try to install this manually by using Makefile, manual located at README.md" && exit 1 ;;
 esac
 }
 
 function install_funct {
 case "$operation" in
     install) 
-    mkdir /etc/iptables-remastered
-    mkdir /etc/iptables-remastered/custom
-    cp etc/firewall/*.conf /etc/iptables-remastered
-    install -m 755 firewall /etc/iptables-remastered/firewall
+    mkdir /etc/fesk
+    mkdir /etc/fesk/custom
+    cp etc/fesk/*.conf /etc/fesk
+    install -m 755 firewall /etc/fesk/firewall
 
     if [ "$init" == "systemd" ]; then
-    install -Dm644 systemd/rtables.service /usr/lib/systemd/system/rtables.service
+    install -Dm644 systemd/fesk.service /usr/lib/systemd/system/fesk.service
     systemctl daemon-reload
     elif [ "$init" == "sysvinit" ]; then
-    ln -s /etc/iptables-remastered/firewall /etc/init.d/firewall
+    ln -s /etc/fesk/firewall /etc/init.d/firewall
     update-rc.d firewall defaults
     fi
 
     echo "Installed" ;;
     update)
 
-    install -m 755 firewall /etc/iptables-remastered/firewall
+    install -m 755 firewall /etc/fesk/firewall
 
     if [ "$init" == "systemd" ]; then
-    systemctl stop rtables
-    install -Dm644 systemd/rtables.service /usr/lib/systemd/system/rtables.service
+    systemctl stop fesk
+    install -Dm644 systemd/fesk.service /usr/lib/systemd/system/fesk.service
     systemctl daemon-reload
     elif [ "$init" == "sysvinit" ]; then
     /etc/init.d/firewall stop
-    ln -s /etc/iptables-remastered/firewall /etc/init.d/firewall
+    ln -s /etc/fesk/firewall /etc/init.d/firewall
     update-rc.d firewall defaults
     fi
     echo "Updated, check new configuration and start your firewall" ;;
@@ -59,14 +59,14 @@ case "$operation" in
 
 
     if [ "$init" == "systemd" ]; then
-    systemctl stop rtables
-    systemctl disable rtables
-    rm -rf /etc/iptables-remastered
-    rm /usr/lib/systemd/system/rtables.service
+    systemctl stop fesk
+    systemctl disable fesk
+    rm -rf /etc/fesk
+    rm /usr/lib/systemd/system/fesk.service
     systemctl daemon-reload
     elif [ "$init" == "sysvinit" ]; then
     /etc/init.d/firewall stop
-    rm -rf  /etc/iptables-remastered
+    rm -rf  /etc/fesk
     rm /etc/init.d/firewall
     fi
     echo "Removed" ;;
@@ -77,7 +77,7 @@ esac
 
 distrocheck
 
-if [ -f "/etc/iptables-remastered/firewall" ]; then
+if [ -f "/etc/fesk/firewall" ]; then
     going_to=ask
 else
     going_to=install
@@ -85,7 +85,7 @@ fi
 
 case "$going_to" in
     ask) 
-    echo "Iptables-Remastered already installed."
+    echo "fesk already installed."
     echo -n "Do you want to update or remove it?[U/R]: "
     read install
     case "$install" in
