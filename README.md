@@ -36,7 +36,7 @@ FESK is a handy firewall with a configurable set of standard rules and quick por
 
 ### Easy Install
 ```
-    git clone https://github.com/STROHMEYER/FESK.git
+    git clone https://github.com/Entframe/FESK.git
     cd FESK
     sudo ./install
 ```
@@ -55,7 +55,7 @@ To uninstall run:
 ####Checkout the github repo and install the files
 
 ```
-    git clone https://github.com/STROHMEYER/FESK.git
+    git clone https://github.com/Entframe/FESK.git
     cd fesk
 
     # If your system running by systemd
