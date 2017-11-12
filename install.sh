@@ -9,7 +9,7 @@ function distrocheck {
 case $(head -n1 /etc/issue | cut -f 1 -d ' ') in
     Arch) init=systemd
     ;;
-    Debian | Ubuntu)    
+    Debian | Ubuntu)
     eval $(grep VERSION_ID= /etc/os-release)
     case "$VERSION_ID" in
         7 | 6 | 5) init=sysvinit ;;
@@ -26,7 +26,7 @@ esac
 
 function install_funct {
 case "$operation" in
-    install) 
+    install)
     mkdir /etc/fesk
     mkdir /etc/fesk/custom
     cp etc/fesk/*.conf /etc/fesk
@@ -78,27 +78,25 @@ esac
 distrocheck
 
 if [ -f "/etc/fesk/firewall" ]; then
-    going_to=ask
+  echo "fesk already installed."
+  echo -n "Do you want to update or remove it?[U/R]: "
+  read going_to
 else
-    going_to=install
+  echo "Iptables-boilderplate project is going to install"
+  echo -n "Are you sure?[Y/N]: "
+  read sure
+  case "$sure" in
+    y|Y) echo Installing on $(head -n1 /etc/issue | cut -f 1 -d ' ') ;;
+    *) exit 1 ;;
+  esac
+  going_to=install
 fi
 
 case "$going_to" in
-    ask) 
-    echo "fesk already installed."
-    echo -n "Do you want to update or remove it?[U/R]: "
-    read install
-    case "$install" in
     R|REMOVE|r) operation=remove ;;
     U|UPDATE|u) operation=update ;;
-    esac
     ;;
-    install) 
-    echo "Iptables-boilderplate project is going to install"
-    echo -n "Are you sure?[Y/N]: "
-    read sure
-    case "$sure" in
-    y|Y) echo Installing on $(head -n1 /etc/issue | cut -f 1 -d ' ')
+    install)
     operation=install ;;
     *) exit 1 ;;
     esac

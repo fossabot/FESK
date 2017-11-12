@@ -28,10 +28,10 @@ case "$1" in
         #################################################################
         # source configuration
         #################################################################
-        if [ -f /etc/iptables-remastered/firewall.conf ] ; then
-            source /etc/iptables-remastered/firewall.conf
-        else 
-            echo "No configuration found in /etc/iptables-remastered/firewall.conf"
+        if [ -f /etc/fesk/firewall.conf ] ; then
+            source /etc/fesk/firewall.conf
+        else
+            echo "No configuration found in /etc/fesk/firewall.conf"
             echo "Exiting..."
             exit 1
         fi
@@ -40,7 +40,7 @@ case "$1" in
 
         ## DELETE OLD RULES
         $IPTABLES -F
-        $IPTABLES -t nat -F 
+        $IPTABLES -t nat -F
         $IPTABLES -t mangle -F
 
         $IPTABLES -X
@@ -69,7 +69,7 @@ case "$1" in
         $IPTABLES -A invalid_drop -m state --state INVALID -j DROP
 
         #################################################################
-        # IPv4 FORWARDING 
+        # IPv4 FORWARDING
         #################################################################
 
         if $ipv4_forwarding ; then
@@ -104,27 +104,27 @@ case "$1" in
         # EXTERNAL CONFIGS
         ##################################################################
 
-        ## ACCEPT ALL CONNECTIONS FROM WHITELIST FILE /etc/iptables-remastered/ip-whitelist.conf
-        for IP in `cat /etc/iptables-remastered/ip-whitelist.conf | sed 's/\s/_/g' | grep -v "^#"`; do
+        ## ACCEPT ALL CONNECTIONS FROM WHITELIST FILE /etc/fesk/ip-whitelist.conf
+        for IP in `cat /etc/fesk/ip-whitelist.conf | sed 's/\s/_/g' | grep -v "^#"`; do
             $IPTABLES -A INPUT -s $IP -m state --state NEW -j ACCEPT
         done;
 
-        ## DROP ALL CONNECTIONS FROM BLACKLIST FILE /etc/iptables-remastered/ip-blacklist.conf
-        for IP in `cat /etc/iptables-remastered/ip-blacklist.conf | sed 's/\s/_/g' | grep -v "^#"`; do
+        ## DROP ALL CONNECTIONS FROM BLACKLIST FILE /etc/fesk/ip-blacklist.conf
+        for IP in `cat /etc/fesk/ip-blacklist.conf | sed 's/\s/_/g' | grep -v "^#"`; do
             $IPTABLES -A INPUT -s $IP -m state --state NEW -j DROP
         done;
 
-        # EXECUTE ALL CUSTOM SCRIPTS IN /etc/iptables-remastered/custom
-        if [ "$(ls -A /etc/iptables-remastered/custom)" ]; then
-            for F in /etc/iptables-remastered/custom/*; do
+        # EXECUTE ALL CUSTOM SCRIPTS IN /etc/fesk/custom
+        if [ "$(ls -A /etc/fesk/custom)" ]; then
+            for F in /etc/fesk/custom/*; do
                 . $F
             done;
         fi
 
-        # ALLOWED PORTS/PROTOCOLS FROM /etc/iptables-remastered/services.conf
-        cat /etc/iptables-remastered/services.conf | grep -v "^#" | while read line; do
+        # ALLOWED PORTS/PROTOCOLS FROM /etc/fesk/services.conf
+        cat /etc/fesk/services.conf | grep -v "^#" | while read line; do
             [ -z "$line" ] && continue
-    
+
             # INITIALIZE
             PORT=""
             PROTO=""
@@ -268,7 +268,7 @@ case "$1" in
         fi
 
         #################################################################
-        # IPv6 
+        # IPv6
         #################################################################
 
         if $ipv6_loopback_ok ; then
@@ -306,13 +306,13 @@ case "$1" in
         ## log all other packages and reject them
         $IPTABLES -A INPUT -j LOG
         $IPTABLES -A INPUT -j REJECT
-        
+
         echo "firewall started"
         ;;
 
     stop)
         echo "stopping firewall..."
-        
+
         ## delete old rules
         $IPTABLES -F
 	    $IPTABLES -t nat -F
@@ -321,7 +321,7 @@ case "$1" in
         $IPTABLES -X
 	    $IPTABLES -t nat -X
 	    $IPTABLES -t mangle -X
-        
+
         ## allow anything
         $IPTABLES -P INPUT ACCEPT
         $IPTABLES -P OUTPUT ACCEPT
@@ -331,7 +331,7 @@ case "$1" in
         $IP6TABLES -P INPUT ACCEPT
         $IP6TABLES -P OUTPUT ACCEPT
         $IP6TABLES -P FORWARD ACCEPT
-        
+
         echo "firewall stopped"
         ;;
 
@@ -353,7 +353,7 @@ case "$1" in
     version)
         echo "Version: 0.0.1"
         ;;
-        
+
     restart|reload|force-reload)
         $0 stop
         sleep 1

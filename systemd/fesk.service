@@ -8,15 +8,15 @@
 
 
 [Unit]
-Description=Iptables-remastered is a custom firewall wrapper for iptables
+Description=Firewall Easy Setup Kit
 After=network.target
 
 [Service]
 Type=oneshot
 
-ExecStart=/etc/iptables-remastered/firewall start
-ExecStop=/etc/iptables-remastered/firewall stop
-ExecReload=/etc/iptables-remastered/firewall restart
+ExecStart=/etc/fesk/firewall start
+ExecStop=/etc/fesk/firewall stop
+ExecReload=/etc/fesk/firewall restart
 
 RemainAfterExit=yes
 StandardOutput=journal

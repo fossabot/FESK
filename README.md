@@ -2,18 +2,19 @@
 ![](https://i.imgur.com/y4cBlEA.png)
 
 ## What is this?
-FESK is a handy firewall with a configurable set of standard rules and quick port settings. Eg for testing Web instances or apps.
+FESK is a handy firewall with a configurable set of standard rules and quick port settings. In e.x for testing Web instances or apps.
 
-#### FESK was tested and works fine on:
+#### FESK are tested and works fine on:
 
 ##### SYSVINIT
-* Debian 6.0 / Squeeze 
-* Debian 7.0 / Wheezy 
-* Debian 8.0 / Jessie 
+* Debian 6.0 / Squeeze
+* Debian 7.0 / Wheezy
+* Debian 8.0 / Jessie
 * Ubuntu 10.04 LTS / Lucid
 * Ubuntu 12.04 LTS / Precise
 * Ubuntu 13.10 / Raring
 * Ubuntu 14.04 LTS / Trusty
+
 ##### SYSTEMD
 * Arch Linux
 * Debian 8.0 / Jessie
@@ -22,7 +23,6 @@ FESK is a handy firewall with a configurable set of standard rules and quick por
 * Ubuntu 15.10 / Wily Werewolf
 * Ubuntu 16.04 / Xenial Xerus
 * Ubuntu 16.10 / Yakkety Yak
-
 
 ####  Features
 * rock solid defaults
@@ -58,7 +58,7 @@ To uninstall run:
     git clone https://github.com/STROHMEYER/FESK.git
     cd fesk
 
-    # If your system running by systemd 
+    # If your system running by systemd
     sudo cp systemd/fesk.service /usr/lib/systemd/system/fesk.service
     sudo cp firewall /etc/fesk/firewall
 
@@ -82,7 +82,7 @@ To uninstall run:
     # For sysvinit
     sudo chmod 755 /etc/init.d/firewall
     sudo update-rc.d firewall defaults
-``` 
+```
 ## Configuration
 
 All configuration-files are to be found at /etc/fesk/
@@ -135,7 +135,7 @@ n.n.n.n/m - Where n.n.n.n is the IP address range and m is the bitmask.
     192.168.0.1
     192.168.1.0/8
     192.168.55.0/255.255.255.148
-    
+
 #### ip-blacklist.conf:
 Add all source IPs you want to COMPLETELY BLOCK
 One IP per line
@@ -151,7 +151,7 @@ n.n.n.n/m - Where n.n.n.n is the IP address range and m is the bitmask.
     192.168.0.1
     192.168.1.0/8
     192.168.55.0/255.255.255.148
-    
+
 #### custom/*:
 Every file/script you place here will be executed during firewall-start.
 Place your custom rules in here.
