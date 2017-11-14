@@ -78,8 +78,8 @@ esac
 distrocheck
 
 if [ -f "/etc/fesk/firewall" ]; then
-  version_fesk=$(cat /etc/fesk/firewall | grep "FESK_VERSION" | cut -f 2 -d "=")
-  echo "fesk $version_fesk already installed."
+  eval $(grep FESK_VERSION= /etc/fesk/firewall)
+  echo "fesk $FESK_VERSION already installed."
   echo -n "Do you want to update or remove it?[U/R]: "
   read going_to
 else
