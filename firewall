@@ -18,7 +18,7 @@
 ## BEWARE:
 ## WE ALLOW ALL --OUTPUT-- IPv4 TRAFFIC BY DEFAULT
 #################################################################
-
+FESK_VERSION=0.1.0
 IPTABLES=/sbin/iptables
 IP6TABLES=/sbin/ip6tables
 
