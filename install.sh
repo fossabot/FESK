@@ -96,11 +96,7 @@ fi
 case "$going_to" in
     R|REMOVE|r) operation=remove ;;
     U|UPDATE|u) operation=update ;;
-    ;;
-    install)
-    operation=install ;;
+    install) operation=install ;;
     *) exit 1 ;;
     esac
-    ;;
-esac
 install_funct
