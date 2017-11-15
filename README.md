@@ -46,13 +46,13 @@ To uninstall run:
 ```
 ### Manual install:
 
-####Create necessary directories first
+### Create necessary directories first
 
 ```
     sudo mkdir /etc/fesk
     sudo mkdir /etc/fesk/custom
 ```
-####Checkout the github repo and install the files
+#### Checkout the github repo and install the files
 
 ```
     git clone https://github.com/Entframe/FESK.git
@@ -68,7 +68,7 @@ To uninstall run:
     cd etc/fesk/
     sudo cp *.conf /etc/fesk/
 ```
-####Make sure firewall is executable and update runnlevels
+#### Make sure firewall is executable and update runnlevels
 ========
 ```
     # For systemd
