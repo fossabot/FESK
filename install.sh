@@ -6,17 +6,18 @@ if [ "x$(id -u)" != 'x0' ]; then
 fi
 
 function distrocheck {
-case $(head -n1 /etc/issue | cut -f 1 -d ' ') in
-    Arch) init=systemd
+eval $(grep ID= /etc/os-release)
+case "$ID" in
+    arch) init=systemd
     ;;
-    Debian | Ubuntu)
+    debian | ubuntu)
     eval $(grep VERSION_ID= /etc/os-release)
     case "$VERSION_ID" in
         7 | 6 | 5) init=sysvinit ;;
         8 | 9) init=systemd ;;
         14.04 | 13.10 | 12.04 | 10.04) init=sysvinit ;;
         15.04 | 15.10 | 16.04 | 16.10) init=systemd ;;
-        *) echo Currently $(head -n1 /etc/issue | cut -f 1 -d ' ') $VERSION_ID is not supported
+        *) echo Currently $ID $VERSION_ID is not supported
         echo Please report it in ISSUES on github && exit 1 ;;
     esac
     ;;
@@ -83,11 +84,11 @@ if [ -f "/etc/fesk/firewall" ]; then
   echo -n "Do you want to update or remove it?[U/R]: "
   read going_to
 else
-  echo "Iptables-boilderplate project is going to install"
+  echo "FESK project is going to install"
   echo -n "Are you sure?[Y/N]: "
   read sure
   case "$sure" in
-    y|Y) echo Installing on $(head -n1 /etc/issue | cut -f 1 -d ' ') ;;
+    y|Y) echo Installing on $ID ;;
     *) exit 1 ;;
   esac
   going_to=install
