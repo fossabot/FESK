@@ -19,6 +19,7 @@
 ## WE ALLOW ALL --OUTPUT-- IPv4 TRAFFIC BY DEFAULT
 #################################################################
 FESK_VERSION=0.1.0
+FESK_DIR="/etc/fesk"
 IPTABLES=/sbin/iptables
 IP6TABLES=/sbin/ip6tables
 
@@ -331,6 +332,10 @@ case "$1" in
         $IP6TABLES -P INPUT ACCEPT
         $IP6TABLES -P OUTPUT ACCEPT
         $IP6TABLES -P FORWARD ACCEPT
+
+        ## Final stop sequence
+        # E.g for delete network interfaces
+        $FESK_DIR/custom_stop_seq
 
         echo "firewall stopped"
         ;;
