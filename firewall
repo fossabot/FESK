@@ -335,7 +335,7 @@ case "$1" in
 
         ## Final stop sequence
         # E.g for delete network interfaces
-        $FESK_DIR/custom_stop_seq
+        $FESK_DIR/custom_stop_seq.conf
 
         echo "firewall stopped"
         ;;
