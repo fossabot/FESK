@@ -13,10 +13,10 @@ case "$ID" in
     debian | ubuntu)
     eval $(grep VERSION_ID= /etc/os-release)
     case "$VERSION_ID" in
-        7 | 6 | 5) init=sysvinit ;;
-        8 | 9) init=systemd ;;
-        14.04 | 13.10 | 12.04 | 10.04) init=sysvinit ;;
-        15.04 | 15.10 | 16.04 | 16.10) init=systemd ;;
+        7 | 6 | 5) echo "Detected Debian $VERSION_ID" && init=sysvinit ;;
+        8 | 9) echo "Detected Debian $VERSION_ID" && init=systemd ;;
+        14.04 | 13.10 | 12.04 | 10.04) echo "Detected Ubuntu $VERSION_ID" && init=sysvinit ;;
+        15.04 | 15.10 | 16.04 | 16.10) echo "Detected Ubuntu $VERSION_ID" && init=systemd ;;
         *) echo Currently $ID $VERSION_ID is not supported
         echo Please report it in ISSUES on github && exit 1 ;;
     esac
@@ -84,11 +84,11 @@ distrocheck
 if [ -f "/etc/fesk/firewall" ]; then
   eval $(grep FESK_VERSION= /etc/fesk/firewall)
   echo "fesk $FESK_VERSION already installed."
-  echo -n "Do you want to update or remove it?[U/R]: "
+  echo -n "Do you want to [U]pdate, [R]emove or Ca[N]cel it? [U/R/N]: "
   read going_to
 else
   echo "FESK project is going to install"
-  echo -n "Are you sure?[Y/N]: "
+  echo -n "Are you sure? [y/N]: "
   read sure
   case "$sure" in
     y|Y) echo Installing on $ID ;;
