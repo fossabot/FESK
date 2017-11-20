@@ -72,6 +72,7 @@ case "$operation" in
     /etc/init.d/fesk stop
     rm -rf /etc/fesk
     rm /etc/init.d/fesk
+    update-rc.d -f fesk remove
     fi
     echo "Removed" ;;
 esac
