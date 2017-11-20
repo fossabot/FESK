@@ -10,7 +10,9 @@
 ### END INIT INFO
 
 # Original author: Bernhard Mäser <bernhard.maeser@scale-it.at>
-# Maintainers & contributors @sudokamikaze & @lithero
+# Current maintainers & contributors:
+# @sudokamikaze
+# Kurt Strohmeyer - @STROHMEYER <lith3ro@gmail.com>
 
 
 
@@ -40,6 +42,7 @@ case "$1" in
         echo "starting firewall..."
 
         ## DELETE OLD RULES
+        echo "Deleting old rules"
         $IPTABLES -F
         $IPTABLES -t nat -F
         $IPTABLES -t mangle -F
@@ -51,7 +54,7 @@ case "$1" in
         #################################################################
         # DEFAULT POLICIES
         #################################################################
-
+        echo "Default policies for INPUT: [DROP] / OUTPUT: [ACCEPT]"
         $IPTABLES -P INPUT DROP
         $IPTABLES -P OUTPUT ACCEPT
 
@@ -60,6 +63,7 @@ case "$1" in
         #################################################################
 
         ## portscan drop
+        echo "Disabling portscans and invalid packages"
         $IPTABLES -N portscan_drop
         $IPTABLES -A portscan_drop -m limit --limit 60/m -j LOG --log-prefix "PORTSCAN DETECTED"
         $IPTABLES -A portscan_drop -j DROP
@@ -77,6 +81,7 @@ case "$1" in
             $IPTABLES -P FORWARD ACCEPT
             ## enable IPv4 forwarding ( ! overwrites sysctl settings ! )
             echo 1 > /proc/sys/net/ipv4/ip_forward
+            echo "Forwarding for IPv4 is now [ACCEPTED]"
         else
             ## drop IPv4 forwarding
             $IPTABLES -P FORWARD DROP
@@ -84,6 +89,7 @@ case "$1" in
             echo 0 > /proc/sys/net/ipv4/ip_forward
             echo 0 > /proc/sys/net/ipv4/conf/all/forwarding
             echo 0 > /proc/sys/net/ipv4/conf/default/forwarding
+            echo "Forwarding for IPv4 is now [DENIED]"
         fi
 
         #################################################################
@@ -183,6 +189,7 @@ case "$1" in
             $IPTABLES -A INPUT -p tcp --tcp-flags ACK,FIN FIN -j portscan_drop
             $IPTABLES -A INPUT -p tcp --tcp-flags ACK,PSH PSH -j portscan_drop
             $IPTABLES -A INPUT -p tcp --tcp-flags ACK,URG URG -j portscan_drop
+            echo "Portscan drop rules set to [DENIED]"
         fi
 
         ##################################################################
@@ -298,6 +305,7 @@ case "$1" in
             ## disable IPv6 ( ! overwrites sysctl settings ! )
             echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
             echo 1 > /proc/sys/net/ipv6/conf/default/disable_ipv6
+            echo "IPv6 is [DISABLED] now"
         fi
 
         ##################################################################
