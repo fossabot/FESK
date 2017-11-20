@@ -30,6 +30,9 @@ case "$operation" in
     install)
     mkdir /etc/fesk
     mkdir /etc/fesk/custom
+    mkdir /etc/fesk/post_down
+    touch /etc/fesk/post_down/sequence.sh
+    chmod +x /etc/fesk/post_down/sequence.sh
     cp etc/fesk/*.conf /etc/fesk
     install -m 755 firewall /etc/fesk/firewall
 
@@ -37,8 +40,8 @@ case "$operation" in
     install -Dm644 systemd/fesk.service /usr/lib/systemd/system/fesk.service
     systemctl daemon-reload
     elif [ "$init" == "sysvinit" ]; then
-    ln -s /etc/fesk/firewall /etc/init.d/firewall
-    update-rc.d firewall defaults
+    ln -s /etc/fesk/firewall /etc/init.d/fesk
+    update-rc.d fesk defaults
     fi
 
     echo "Installed" ;;
@@ -51,9 +54,9 @@ case "$operation" in
     install -Dm644 systemd/fesk.service /usr/lib/systemd/system/fesk.service
     systemctl daemon-reload
     elif [ "$init" == "sysvinit" ]; then
-    /etc/init.d/firewall stop
-    ln -s /etc/fesk/firewall /etc/init.d/firewall
-    update-rc.d firewall defaults
+    /etc/init.d/fesk stop
+    ln -s /etc/fesk/firewall /etc/init.d/fesk
+    update-rc.d fesk defaults
     fi
     echo "Updated, check new configuration and start your firewall" ;;
     remove)
@@ -66,9 +69,9 @@ case "$operation" in
     rm /usr/lib/systemd/system/fesk.service
     systemctl daemon-reload
     elif [ "$init" == "sysvinit" ]; then
-    /etc/init.d/firewall stop
-    rm -rf  /etc/fesk
-    rm /etc/init.d/firewall
+    /etc/init.d/fesk stop
+    rm -rf /etc/fesk
+    rm /etc/init.d/fesk
     fi
     echo "Removed" ;;
 esac
