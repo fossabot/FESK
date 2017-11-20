@@ -324,12 +324,12 @@ case "$1" in
 
         ## delete old rules
         $IPTABLES -F
-	    $IPTABLES -t nat -F
-	    $IPTABLES -t mangle -F
+	      $IPTABLES -t nat -F
+	      $IPTABLES -t mangle -F
 
         $IPTABLES -X
-	    $IPTABLES -t nat -X
-	    $IPTABLES -t mangle -X
+	      $IPTABLES -t nat -X
+	      $IPTABLES -t mangle -X
 
         ## allow anything
         $IPTABLES -P INPUT ACCEPT
@@ -343,7 +343,7 @@ case "$1" in
 
         ## Final stop sequence
         # E.g for delete network interfaces
-        $FESK_DIR/custom_stop_seq.conf
+        $FESK_DIR/post_down/sequence.sh
 
         echo "firewall stopped"
         ;;
