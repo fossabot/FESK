@@ -1,4 +1,5 @@
 # FIREWALL EASY SETUP KIT
+Current version can be unstable, we work on it now.
 ![](https://i.imgur.com/y4cBlEA.png)
 
 ## What is this?
