@@ -4,7 +4,8 @@
 ### Current version can be unstable, we work on it now.
 #### Please report about any troubles in ISSUES section.
 ## What is this?
-FESK is a handy firewall with a configurable set of standard rules and quick port settings. In e.x for testing Web instances or apps.
+FESK is a handy firewall with a configurable set of standard rules and quick port settings. For example:
+ for testing Web instances or apps.
 
 #### FESK are tested and works fine on:
 
@@ -18,7 +19,7 @@ FESK is a handy firewall with a configurable set of standard rules and quick por
 * Ubuntu 14.04 LTS / Trusty
 
 ##### SYSTEMD
-* Arch Linux
+* Arch Linux(Has PKGBUILD support)
 * Debian 8.0 / Jessie
 * Debian 9.0 / Stretch
 * Ubuntu 15.04 LTS / Vivid Vervet
@@ -35,6 +36,12 @@ FESK is a handy firewall with a configurable set of standard rules and quick por
 * extensively documented (inline comments)
 
 ## Installation
+
+### Archlinux users
+
+You might use our PKGBUILD to install & update
+
+So, [check this out](https://github.com/Entframe/FESK-Archlinux)
 
 ### Easy Install
 ```
