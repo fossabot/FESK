@@ -19,7 +19,16 @@ echo "You have latest version"
 fi
 }
 
+function helpfunction {
+echo " "
+echo "SYNTAX: "
+echo "-S or --status : To display FESK firewall status"
+echo "-U or --update : To update your installed FESK"
+echo " "
+}
+
 case "$1" in
   "-S"|"--status") /etc/fesk/firewall status ;;
   "-U"|"--update") upd ;;
+  "-H"|"--help"|*) helpfunction ;;
 esac
