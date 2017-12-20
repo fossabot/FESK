@@ -75,6 +75,10 @@ esac
 
 distrocheck
 
+case "$1" in
+  "--update") going_to=update && install_function && exit ;;
+esac
+
 if [ ! -f "/etc/fesk/firewall" ]; then
 echo -n "FESK is going to install, are you sure?[Y/N]: "
 read sure
