@@ -1,0 +1,25 @@
+#!/bin/bash
+
+function upd {
+cd /tmp
+wget https://raw.githubusercontent.com/Entframe/FESK/master/firewall
+sed -i "s@FESK_VERSION=@UPSTEAM=@g" /tmp/firewall
+eval $(grep UPSTREAM= /tmp/firewall)
+eval $(grep FESK_VERSION= /etc/fesk/firewall)
+compare=$(/etc/fesk/utils/version_compare $FESK_VERSION $UPSTEAM)
+if [ "$compare" == "<" ]; then
+echo "Updating"
+git clone https://github.com/Entframe/FESK.git && cd FESK
+echo " "
+echo "Enter your password to update: "
+echo " "
+sudo ./install.sh --update
+else
+echo "You have latest version"
+fi
+}
+
+case "$1" in
+  "-S"|"--status") /etc/fesk/firewall status ;;
+  "-U"|"--update") upd ;;
+esac
