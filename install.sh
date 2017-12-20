@@ -12,11 +12,12 @@ case "$ID" in
     ;;
     debian | ubuntu)
     eval $(grep VERSION_ID= /etc/os-release)
+    echo "Detected $ID | awk '{print toupper($0)}'" && echo "$VERSION_ID"
     case "$VERSION_ID" in
-        7 | 6 | 5) echo "Detected Debian $VERSION_ID" && init=sysvinit ;;
-        8 | 9) echo "Detected Debian $VERSION_ID" && init=systemd ;;
-        14.04 | 13.10 | 12.04 | 10.04) echo "Detected Ubuntu $VERSION_ID" && init=sysvinit ;;
-        15.04 | 15.10 | 16.04 | 16.10) echo "Detected Ubuntu $VERSION_ID" && init=systemd ;;
+        7 | 6 | 5) init=sysvinit ;;
+        8 | 9)  init=systemd ;;
+        14.04 | 13.10 | 12.04 | 10.04) init=sysvinit ;;
+        15.04 | 15.10 | 16.04 | 16.10) init=systemd ;;
         *) echo Currently $ID $VERSION_ID is not supported
         echo Please report it in ISSUES on github && exit 1 ;;
     esac
@@ -25,7 +26,7 @@ case "$ID" in
 esac
 }
 
-function install_funct {
+function install_function {
 case "$operation" in
     install)
     mkdir /etc/fesk
@@ -35,33 +36,27 @@ case "$operation" in
     chmod +x /etc/fesk/post_down/sequence.sh
     cp etc/fesk/*.conf /etc/fesk
     install -m 755 firewall /etc/fesk/firewall
-
     if [ "$init" == "systemd" ]; then
     install -Dm644 systemd/fesk.service /usr/lib/systemd/system/fesk.service
     systemctl daemon-reload
     elif [ "$init" == "sysvinit" ]; then
-    ln -s /etc/fesk/firewall /etc/init.d/fesk
+    ln  /etc/fesk/firewall /etc/init.d/fesk
     update-rc.d fesk defaults
     fi
-
     echo "Installed" ;;
     update)
-
     install -m 755 firewall /etc/fesk/firewall
-
     if [ "$init" == "systemd" ]; then
     systemctl stop fesk
     install -Dm644 systemd/fesk.service /usr/lib/systemd/system/fesk.service
     systemctl daemon-reload
     elif [ "$init" == "sysvinit" ]; then
     /etc/init.d/fesk stop
-    ln -s /etc/fesk/firewall /etc/init.d/fesk
+    ln /etc/fesk/firewall /etc/init.d/fesk
     update-rc.d fesk defaults
     fi
     echo "Updated, check new configuration and start your firewall" ;;
     remove)
-
-
     if [ "$init" == "systemd" ]; then
     systemctl stop fesk
     systemctl disable fesk
@@ -78,30 +73,26 @@ case "$operation" in
 esac
 }
 
-# ========================================================
-
 distrocheck
 
-if [ -f "/etc/fesk/firewall" ]; then
-  eval $(grep FESK_VERSION= /etc/fesk/firewall)
-  echo "fesk $FESK_VERSION already installed."
-  echo -n "Do you want to [U]pdate, [R]emove or Ca[N]cel it? [U/R/N]: "
-  read going_to
+if [ ! -f "/etc/fesk/firewall" ]; then
+echo -n "FESK is going to install, are you sure?[Y/N]: "
+read sure
+case "$sure" in
+  y|Y) going_to=install ;;
+  *) exit 1
+esac
 else
-  echo "FESK project is going to install"
-  echo -n "Are you sure? [y/N]: "
-  read sure
-  case "$sure" in
-    y|Y) echo Installing on $ID ;;
-    *) exit 1 ;;
-  esac
-  going_to=install
+eval $(grep FESK_VERSION= /etc/fesk/firewall)
+echo "Fesk $FESK_VERSION already installed on this device"
+echo -n "Do you want to [U]pdate, [R]emove or Ca[N]cel it? [U/R/N]: "
+read going_to
 fi
 
 case "$going_to" in
-    R|REMOVE|r) operation=remove ;;
-    U|UPDATE|u) operation=update ;;
+    R|r|REMOVE|Remove|remove) operation=remove ;;
+    U|u|UPDATE|Update|update) operation=update ;;
     install) operation=install ;;
     *) echo "Operation cancelled" && exit 1 ;;
-    esac
-install_funct
+esac
+install_function
