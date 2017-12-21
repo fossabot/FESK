@@ -27,6 +27,8 @@ Table of contents
 
 Introduction
 ------------
+![](https://i.imgur.com/y4cBlEA.png)
+
 FESK is a handy firewall with a configurable set of standard rules and quick port settings.
 For example: for testing Web instances or apps.
 
