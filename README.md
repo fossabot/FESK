@@ -40,9 +40,9 @@ Supported distributions
 ------------
 
 ### SYSVINIT
+* Debian 5.0 / 
 * Debian 6.0 / Squeeze
 * Debian 7.0 / Wheezy
-* Debian 8.0 / Jessie
 * Ubuntu 10.04 LTS / Lucid
 * Ubuntu 12.04 LTS / Precise
 * Ubuntu 13.10 / Raring
