@@ -40,7 +40,7 @@ Supported distributions
 ------------
 
 ### SYSVINIT
-* Debian 5.0 / 
+* Debian 5.0
 * Debian 6.0 / Squeeze
 * Debian 7.0 / Wheezy
 * Ubuntu 10.04 LTS / Lucid
@@ -50,6 +50,7 @@ Supported distributions
 
 ### SYSTEMD
 * Arch Linux(Has PKGBUILD support)
+* Centos 7
 * Debian 8.0 / Jessie
 * Debian 9.0 / Stretch
 * Ubuntu 15.04 LTS / Vivid Vervet

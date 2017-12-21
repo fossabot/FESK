@@ -10,6 +10,13 @@ eval $(grep ID= /etc/os-release)
 case "$ID" in
     arch) init=systemd
     ;;
+    centos)
+    eval $(grep VERSION_ID= /etc/os-release)
+    echo Detected $ID | awk '{print toupper($0)}' && echo "$VERSION_ID"
+    case "$VERSION_ID" in
+      7) init=systemd ;;
+    esac
+    ;;
     debian | ubuntu)
     eval $(grep VERSION_ID= /etc/os-release)
     echo "Detected $ID | awk '{print toupper($0)}'" && echo "$VERSION_ID"
