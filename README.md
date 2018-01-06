@@ -11,8 +11,6 @@ Table of contents
 - [Introduction](#introduction)
 - [Known issues](#known-issues)
 - [Supported distributions](#supported-distributions)
-  - [SYSVINIT](#sysvinit)
-  - [SYSTEMD](#systemd)
 - [Installation](#installation)
   - [Uninstallation](#uninstallation)
   - [Manual install](#manual-Installation)
@@ -43,24 +41,8 @@ At this time we haven't any issues reported
 Supported distributions
 ------------
 
-### SYSVINIT
-* Debian 5.0
-* Debian 6.0 / Squeeze
-* Debian 7.0 / Wheezy
-* Ubuntu 10.04 LTS / Lucid
-* Ubuntu 12.04 LTS / Precise
-* Ubuntu 13.10 / Raring
-* Ubuntu 14.04 LTS / Trusty
+Everything that works on systemd or sysvinit
 
-### SYSTEMD
-* Arch Linux(Has PKGBUILD support)
-* Centos 7
-* Debian 8.0 / Jessie
-* Debian 9.0 / Stretch
-* Ubuntu 15.04 LTS / Vivid Vervet
-* Ubuntu 15.10 / Wily Werewolf
-* Ubuntu 16.04 / Xenial Xerus
-* Ubuntu 16.10 / Yakkety Yak
 
 Installation
 ------------

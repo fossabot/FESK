@@ -5,30 +5,10 @@ if [ "x$(id -u)" != 'x0' ]; then
     exit 1
 fi
 
-function distrocheck {
-eval $(grep ID= /etc/os-release)
-case "$ID" in
-    arch) init=systemd
-    ;;
-    centos)
-    eval $(grep VERSION_ID= /etc/os-release)
-    echo Detected $ID | awk '{print toupper($0)}' && echo -n "$VERSION_ID"
-    case "$VERSION_ID" in
-      7) init=systemd ;;
-    esac
-    ;;
-    debian | ubuntu)
-    eval $(grep VERSION_ID= /etc/os-release)
-    echo Detected $ID | awk '{print toupper($0)}' && echo -n "$VERSION_ID"
-    case "$VERSION_ID" in
-        7 | 6 | 5) init=sysvinit ;;
-        8 | 9)  init=systemd ;;
-        14.04 | 13.10 | 12.04 | 10.04) init=sysvinit ;;
-        15.04 | 15.10 | 16.04 | 16.10) init=systemd ;;
-        *) echo Currently $ID $VERSION_ID is not supported
-        echo Please report it in ISSUES on github && exit 1 ;;
-    esac
-    ;;
+function initcheck {
+case $(ps --no-headers -o comm 1) in
+    systemd) init=systemd ;;
+    init) init=sysvinit ;;
     *) echo "Unsuported distro. However, you can try to install this manually by using Makefile, manual located at README.md" && exit 1 ;;
 esac
 }
@@ -77,7 +57,7 @@ case "$1" in
 esac
 }
 
-distrocheck
+initcheck
 
 case "$1" in
   "--update") core update && exit ;;
