@@ -33,14 +33,12 @@ case "$ID" in
 esac
 }
 
-function install_function {
-case "$operation" in
+function core() {
+case "$1" in
     install)
-    mkdir /etc/fesk
-    mkdir /etc/fesk/custom
+    mkdir -p /etc/fesk/custom
     mkdir /etc/fesk/post_down
-    touch /etc/fesk/post_down/sequence.sh
-    chmod +x /etc/fesk/post_down/sequence.sh
+    touch /etc/fesk/post_down/sequence.sh && chmod +x /etc/fesk/post_down/sequence.sh
     cp etc/fesk/*.conf /etc/fesk
     install -m 755 firewall /etc/fesk/firewall
     if [ "$init" == "systemd" ]; then
@@ -59,7 +57,6 @@ case "$operation" in
     systemctl daemon-reload
     elif [ "$init" == "sysvinit" ]; then
     /etc/init.d/fesk stop
-    ln /etc/fesk/firewall /etc/init.d/fesk
     update-rc.d fesk defaults
     fi
     echo "Updated, check new configuration and start your firewall" ;;
@@ -83,27 +80,25 @@ esac
 distrocheck
 
 case "$1" in
-  "--update") going_to=update && install_function && exit ;;
+  "--update") core update && exit ;;
 esac
 
 if [ ! -f "/etc/fesk/firewall" ]; then
 echo -n "FESK is going to install, are you sure?[Y/N]: "
 read sure
 case "$sure" in
-  y|Y) going_to=install ;;
-  *) exit 1
+    y|Y) core install
+    n|N) exit 1
 esac
 else
 eval $(grep FESK_VERSION= /etc/fesk/firewall)
 echo "Fesk $FESK_VERSION already installed on this device"
 echo -n "Do you want to [U]pdate, [R]emove or Ca[N]cel it? [U/R/N]: "
 read going_to
-fi
-
 case "$going_to" in
-    R|r|REMOVE|Remove|remove) operation=remove ;;
-    U|u|UPDATE|Update|update) operation=update ;;
-    install) operation=install ;;
+    R|r) core remove ;;
+    U|u) core update ;;
     *) echo "Operation cancelled" && exit 1 ;;
 esac
-install_function
+
+fi
