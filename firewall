@@ -20,7 +20,7 @@
 ## BEWARE:
 ## WE ALLOW ALL --OUTPUT-- IPv4 TRAFFIC BY DEFAULT
 #################################################################
-FESK_VERSION=0.1.2
+FESK_VERSION=0.1.3
 FESK_DIR="/etc/fesk"
 IPTABLES=/sbin/iptables
 IP6TABLES=/sbin/ip6tables
@@ -364,7 +364,7 @@ case "$1" in
         ;;
 
     version)
-        echo "Version: 0.0.1"
+        echo "$FESK_VERSION"
         ;;
 
     restart|reload|force-reload)

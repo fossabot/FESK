@@ -3,10 +3,10 @@
 function upd {
 cd /tmp
 wget https://raw.githubusercontent.com/Entframe/FESK/master/firewall
-sed -i "s@FESK_VERSION=@UPSTEAM=@g" /tmp/firewall
+sed -i "s@FESK_VERSION=@UPSTREAM=@g" /tmp/firewall
 eval $(grep UPSTREAM= /tmp/firewall)
 eval $(grep FESK_VERSION= /etc/fesk/firewall)
-compare=$(/etc/fesk/utils/version_compare $FESK_VERSION $UPSTEAM)
+compare=$(/etc/fesk/utils/version_compare $FESK_VERSION $UPSTREAM)
 if [ "$compare" == "<" ]; then
 echo "Updating"
 git clone https://github.com/Entframe/FESK.git && cd FESK
