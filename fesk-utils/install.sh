@@ -22,7 +22,7 @@ case "$sure" in
   install -m 755 feskd /etc/fesk/utils/feskd
   install -m 755 version_compare /etc/fesk/utils/version_compare
   ln /etc/fesk/utils/feskd /bin/feskd
-fi
+  fi
   ;;
 esac
 fi
