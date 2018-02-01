@@ -67,8 +67,8 @@ if [ ! -f "/etc/fesk/firewall" ]; then
 echo -n "FESK is going to install, are you sure?[Y/N]: "
 read sure
 case "$sure" in
-    y|Y) core install
-    n|N) exit 1
+    y|Y) core install ;;
+    n|N) exit 1 ;;
 esac
 else
 eval $(grep FESK_VERSION= /etc/fesk/firewall)
