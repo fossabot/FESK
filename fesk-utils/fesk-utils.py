@@ -20,7 +20,7 @@ import subprocess
 import argparse
 from git import Repo
 from distutils.version import LooseVersion, StrictVersion
-from shutil import copy2, rmtree
+from shutil import rmtree
 
 class MAINW:
     __fesk_lexe = "/etc/FESK/firewall"
@@ -63,7 +63,7 @@ class MAINW:
         compare = LooseVersion(fesk_local_ver.stdout) < LooseVersion(fesk_upstream_ver.stdout)
         if compare == True:
             print('Updating to latest...')
-            copy2("/tmp/FESK/firewall", '/etc/FESK/firewall')
+            subprocess.call(['/tmp/FESK/install.sh', '--update'])
             print('Everything is OK, removing TEMP files and exiting...')
         else: 
             print("There's nothing to do")
