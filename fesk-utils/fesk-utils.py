@@ -1,3 +1,4 @@
+#!/bin/python
 # This file is part of FESK project
 # Copyright (C) 2018  EntFrame
 
@@ -13,7 +14,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
-#!/bin/python
 
 import os, getpass, sys
 import subprocess
@@ -28,22 +28,18 @@ class MAINW:
     __whoami = ""
 
     def __init__(self):
+        self.__whoami = getpass.getuser()
+        if self.__whoami != 'root':
+            print("You're running without root privileges, exiting...")
+            sys.exit(1)
         if os.path.exists(self.__fesk_lexe):
-            self.__whoami = getpass.getuser()
             self.__local_argv = argparse.ArgumentParser()
             self.__local_argv.add_argument("-U", "--update", help='Calls update function', action="store_true")
             self.__local_argv.add_argument("-S", "--status", help='Shows FESK status', action="store_true")
-            self.check(self.__whoami)
+            self.parse(self.__local_argv.parse_args())
         else:
             print("FESK isn't installed. Exiting...")
             sys.exit(1)
-
-    def check(self,user):
-        if user != 'root':
-            print("You're running without root privileges, exiting...")
-            sys.exit(1)
-        else:
-            self.parse(self.__local_argv.parse_args())
 
     def parse(self,args):
         if args.update:
