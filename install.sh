@@ -9,7 +9,7 @@ function initcheck {
 case $(ps --no-headers -o comm 1) in
     systemd) init=systemd ;;
     init) init=sysvinit ;;
-    *) echo "Unsuported distro. However, you can try to install this manually by using Makefile, manual located at README.md" && exit 1 ;;
+    *) echo "Unsuported distro. However, you could try to install manually by using Makefile. Also, manuals located in README.md" && exit 1 ;;
 esac
 }
 
@@ -21,16 +21,20 @@ case "$1" in
     touch /etc/fesk/post_down/sequence.sh && chmod +x /etc/fesk/post_down/sequence.sh
     cp etc/fesk/*.conf /etc/fesk
     install -m 755 firewall /etc/fesk/firewall
+    install -m 755 fesk-utils/fesk-utils.py /etc/fesk/fesk-utils.py
+    ln -s /etc/fesk/fesk-utils.py /bin/fesk-utils
     if [ "$init" == "systemd" ]; then
     install -Dm644 systemd/fesk.service /usr/lib/systemd/system/fesk.service
     systemctl daemon-reload
     elif [ "$init" == "sysvinit" ]; then
-    ln  /etc/fesk/firewall /etc/init.d/fesk
+    ln -s /etc/fesk/firewall /etc/init.d/fesk
     update-rc.d fesk defaults
     fi
     echo "Installed" ;;
     update)
     install -m 755 firewall /etc/fesk/firewall
+    install -m 755 fesk-utils/fesk-utils.py /etc/fesk/fesk-utils.py
+    ln -s /etc/fesk/fesk-utils.py /bin/fesk-utils
     if [ "$init" == "systemd" ]; then
     systemctl stop fesk
     install -Dm644 systemd/fesk.service /usr/lib/systemd/system/fesk.service
@@ -53,6 +57,7 @@ case "$1" in
     rm /etc/init.d/fesk
     update-rc.d -f fesk remove
     fi
+    rm /bin/fesk-utils
     echo "Removed" ;;
 esac
 }
@@ -80,5 +85,4 @@ case "$going_to" in
     U|u) core update ;;
     *) echo "Operation cancelled" && exit 1 ;;
 esac
-
 fi
