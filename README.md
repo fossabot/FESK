@@ -168,11 +168,11 @@ Usage
 
 FESK-Utils
 ------------
-I've writed small script for Simplifying Life
+I've written Python script for managing updates and checking firewall status
 
-They located in `fesk-utils` directory. Main script and installer
+They located in `fesk-utils` directory. 
 
-You need to have `CMake` and `Make` installed to compile C library
+You need to install these modules: `shutil, argparse, subprocess`
 
 Credits
 ------------
@@ -182,4 +182,3 @@ FESK project is Free Software, licensed under version 2 of the **GNU General Pub
 
 ### Special Thanks
  - Thanks to Bmaeser for his codebase for our project (@bmaeser)
- - Thanks to @AMDmi3 and @repology for their great libversion tool that we used in fesk-utils
