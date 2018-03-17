@@ -23,7 +23,7 @@ from distutils.version import LooseVersion, StrictVersion
 from shutil import rmtree
 
 class MAINW:
-    __fesk_lexe = "/etc/FESK/firewall"
+    __fesk_lexe = "/etc/fesk/firewall"
     __local_argv = None
     __whoami = ""
 
@@ -52,8 +52,12 @@ class MAINW:
     def update(self):
         print('Checking for updates...')
         print('Downloading upstream sources...')
-        Repo.clone_from("https://github.com/Entframe/FESK.git", "/tmp/FESK")
-        
+        try:
+            Repo.clone_from("https://github.com/Entframe/FESK.git", "/tmp/FESK")
+        except:
+            rmtree("/tmp/FESK")
+            Repo.clone_from("https://github.com/Entframe/FESK.git", "/tmp/FESK")
+
         fesk_local_ver = subprocess.run([self.__fesk_lexe, 'version'], stdout=subprocess.PIPE, universal_newlines=True)
         fesk_upstream_ver = subprocess.run(['/tmp/FESK/firewall', 'version'], stdout=subprocess.PIPE, universal_newlines=True)
         
