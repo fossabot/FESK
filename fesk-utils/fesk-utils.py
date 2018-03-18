@@ -19,7 +19,7 @@ import os, getpass, sys
 import subprocess
 import argparse
 from git import Repo
-from distutils.version import LooseVersion, StrictVersion
+from distutils.version import LooseVersion
 from shutil import rmtree
 
 class MAINW:
@@ -64,8 +64,7 @@ class MAINW:
         print('Installed version is: ', fesk_local_ver.stdout)
         print('Upstream version is: ', fesk_upstream_ver.stdout)
         
-        compare = LooseVersion(fesk_local_ver.stdout) < LooseVersion(fesk_upstream_ver.stdout)
-        if compare == True:
+        if LooseVersion(fesk_local_ver.stdout) < LooseVersion(fesk_upstream_ver.stdout) == True:
             print('Updating to latest...')
             subprocess.call(['/tmp/FESK/install.sh', '--update'])
             print('Everything is OK, removing TEMP files and exiting...')
