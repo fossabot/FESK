@@ -1,9 +1,9 @@
 FESK - Firewall Easy Setup Kit
 ==========
 
-Ready package for Archlinux
+Available for Archlinux
 --------------------------
-Starting from 23.11.2017, ready package, is available **[on our github](https://github.com/Entframe/FESK-Archlinux)**.
+Starting from 23.11.2017 we have a package for Archlinux which hosted **[on our github](https://github.com/Entframe/FESK-Archlinux)**.
 
 Table of contents
 -----------------
