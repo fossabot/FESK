@@ -15,13 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import os, getpass, sys
-import subprocess
-import argparse
-from git import Repo
-from distutils.version import LooseVersion
-from shutil import rmtree
-
+try:
+    import os, getpass, sys
+    import subprocess
+    import argparse
+    from git import Repo
+    from distutils.version import LooseVersion
+    from shutil import rmtree
+except ModuleNotFoundError:
+    print('You must to install these modules to perform this script running properly: ', '\n', 'shutil git argparse subprocess')
+    sys.exit(1)
+    
 class MAINW:
     __fesk_lexe = "/etc/fesk/firewall"
     __local_argv = None
