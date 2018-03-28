@@ -22,10 +22,15 @@ try:
     from git import Repo
     from distutils.version import LooseVersion
     from shutil import rmtree
-except ModuleNotFoundError:
-    print('You must to install these modules to perform this script running properly: ', '\n', 'shutil git argparse subprocess')
+except ImportError:
+    raise ImportError(
+        "Couldn't import some modules. Are you sure it's installed and "
+        "available on your PYTHONPATH environment variable? If you"
+        "not sure, you must to install these modules: shutil, git, argparse, subprocess"
+        )
+    raise
     sys.exit(1)
-    
+
 class MAINW:
     __fesk_lexe = "/etc/fesk/firewall"
     __local_argv = None
