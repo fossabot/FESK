@@ -65,6 +65,8 @@ To uninstall run:
 
 ```
 # Create important directories
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEntframe%2FFESK.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FEntframe%2FFESK?ref=badge_shield)
+
 
 sudo mkdir -p /etc/fesk/custom
 
@@ -182,3 +184,7 @@ FESK project is Free Software, licensed under version 2 of the **GNU General Pub
 
 ### Special Thanks
  - Thanks to Bmaeser for his codebase for our project (@bmaeser)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEntframe%2FFESK.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FEntframe%2FFESK?ref=badge_large)
